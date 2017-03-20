@@ -18,9 +18,9 @@ doSomething <- function(datadir) {
 	url <- "sftp://transfer6.silverpop.com/download/"
 	userpwd <- paste0(UserName,":",PassWord)
 	
-	#last_file_df <- read.csv("in/tables/last_file.csv")
-	#last_file <- last_file_df[1,1]
-	last_file<-"Zindulka_CRMi_SalesForce - All - Mar 17 2017 03-53-32 PM.CSV"
+	last_file_df <- read.csv("in/tables/last_file.csv")
+	last_file <- last_file_df[1,1]
+	
 	
 
 	
