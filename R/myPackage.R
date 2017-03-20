@@ -19,7 +19,7 @@ doSomething <- function(datadir) {
 	
 	#last_file_df <- read.csv("in/tables/last_file.csv")
 	#last_file <- last_file_df[1,1]
-	last_file<-"Zindulka_CRMi_SalesForce - All - Mar 20 2017 11-34-24 AM.CSV"
+	last_file<-"Zindulka_CRMi_SalesForce - All - Mar 20 2017 04-03-34 PM.CSV"
 	
 	library(RCurl)
 	data_01<-getURL(paste(url,last_file,sep=""), userpwd = userpwd)
