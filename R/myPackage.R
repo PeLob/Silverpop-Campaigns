@@ -24,14 +24,16 @@ doSomething <- function(datadir) {
 	
 
 	
-	zipfile <- getBinaryURL(paste(url,last_file,sep=""), userpwd = userpwd)
-	writeBin(zipfile, "test.zip")
-	unzip("test.zip")
+	#zipfile <- getBinaryURL(paste(url,last_file,sep=""), userpwd = userpwd)
+	#writeBin(zipfile, "test.zip")
+	#unzip("test.zip")
 
-	csv_file <- gsub("zip","csv",last_file)
-	
+	#csv_file <- gsub("zip","csv",last_file)
+	csv_file<-last_file
 	
 	df <- read.csv(csv_file)
 	
-	write.csv(df, file = file.path(datadir, "out/tables/events.csv"), row.names = FALSE)
+	#write.csv(df, file = file.path(datadir, "out/tables/events.csv"), row.names = FALSE)
+	write.csv(df, file = file.path(datadir, "out/tables/CRMi.csv"), row.names = FALSE)
+	
 }
