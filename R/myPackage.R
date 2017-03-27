@@ -102,6 +102,6 @@ doSomething <- function(datadir) {
 	
 	df <- read.csv(csv_file)
 	
-	write.csv(df, file = file.path(datadir, "out/tables/events.csv"), row.names = FALSE)
+	write.csv(df, file = file.path(datadir, "out/tables/campaigns.csv"), row.names = FALSE)
   
 }
