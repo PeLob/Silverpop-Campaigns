@@ -16,7 +16,7 @@ doSomething <- function(datadir) {
 	PassWord <- app$getParameters()$PassWord
 	
 	
-	StartDate <- as.character(format(Sys.time()-24*60*60, "%m/%d/%Y %H:%M:%S"))
+	StartDate <- as.character(format(Sys.time()-24*60*60*30, "%m/%d/%Y %H:%M:%S"))
 	EndDate <- as.character(format(Sys.time(), "%m/%d/%Y %H:%M:%S")) #add 24 hours 
 		
 	  
@@ -45,63 +45,28 @@ doSomething <- function(datadir) {
 	## Date parameters: COULD WE PASS DATE PARAMETERS FROM THE ORCHESTRATION LAYER?
 	body2 <- "<Envelope>
 			  <Body>   
-				<RawRecipientDataExport>    
-				<EVENT_DATE_START>StartDate</EVENT_DATE_START>    
-				<EVENT_DATE_END>EndDate</EVENT_DATE_END>    
-				<MOVE_TO_FTP>TRUE</MOVE_TO_FTP> 
-				<EXPORT_FORMAT>0</EXPORT_FORMAT>   
-				<EMAIL>Email</EMAIL>    
-				<ALL_EVENT_TYPES/>    
-				<INCLUDE_INBOX_MONITORING/>   
-				</RawRecipientDataExport>  
+				<GetAggregateTrackingForUser>    
+				<DATE_START>StartDate</DATE_START>    
+				<DATE_END>EndDate</DATE_END>    
+				</GetAggregateTrackingForUser>  
 			  </Body> 
 			  </Envelope>"
 
 	# Trick to pass the parameters
 	body2 <- gsub("StartDate", StartDate, body2)
 	body2 <- gsub("EndDate", EndDate, body2)
-	body2 <- gsub("Email", Email, body2)
+	#body2 <- gsub("Email", Email, body2)
 
 	test2 <- POST(url = paste(apiURL,jsessionid,sep=""), body = body2
 				  ,verbose(), content_type("text/xml"))
 
 
 	xml_data <- xmlParse(test2)
-
-	## 
-	nodes <- getNodeSet(xml_data, "//FILE_PATH")
-
-	## Parse response to Data Frame
-	data <- xmlToDataFrame(nodes)
-
-	fname <- as.character(data[[1]])
-	
-	fname_df <- data.frame(filename = fname)
+	xml_data <- xmlRoot(xml_data)
+  	data <- xmlToDataFrame(xml_data[[1]][[1]])
+  	data <- data[is.na(data$text)==TRUE,2:54]
  
-
-
-  # write output
-   #write.csv(fname_df, file = file.path(datadir, "out/tables/last_file.csv"), row.names = FALSE)
-  
-  
-	url <- "sftp://transfer6.silverpop.com/download/"
-	userpwd <- paste0(UserName,":",PassWord)
-	
-	#last_file_df <- read.csv("in/tables/last_file.csv")
-	#last_file <- last_file_df[1,1]
-	last_file<-fname
-	
-
-	
-	zipfile <- getBinaryURL(paste(url,last_file,sep=""), userpwd = userpwd)
-	writeBin(zipfile, "test.zip")
-	unzip("test.zip")
-
-	csv_file <- gsub("zip","csv",last_file)
-	
-	
-	df <- read.csv(csv_file)
-	
-	write.csv(df, file = file.path(datadir, "out/tables/campaigns.csv"), row.names = FALSE)
+ 	# write output
+ 	write.csv(data, file = file.path(datadir, "out/tables/campaigns.csv"), row.names = FALSE)
   
 }
