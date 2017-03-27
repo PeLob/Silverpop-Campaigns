@@ -16,7 +16,7 @@ doSomething <- function(datadir) {
 	PassWord <- app$getParameters()$PassWord
 	
 	
-	StartDate <- as.character(format(Sys.time()-24*60*60*450, "%m/%d/%Y %H:%M:%S"))
+	StartDate <- as.character(format(Sys.time()-24*60*60, "%m/%d/%Y %H:%M:%S"))
 	EndDate <- as.character(format(Sys.time(), "%m/%d/%Y %H:%M:%S")) #add 24 hours 
 		
 	  
@@ -89,7 +89,7 @@ doSomething <- function(datadir) {
 	
 	#last_file_df <- read.csv("in/tables/last_file.csv")
 	#last_file <- last_file_df[1,1]
-	last_file<-fname_df
+	last_file<-fname
 	
 
 	
